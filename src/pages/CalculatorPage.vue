@@ -14,9 +14,8 @@ export default {
   },
   methods: {
     // Переключаем оператор. По умолчанию включен оператор сложения.
-    switchOperator(e) {
-      const currentButton = e.target
-      const chosenOperator = currentButton.innerText
+    switchOperator(operator, e) {
+      const currentButton = e.target.closest('button')
 
       // Если выбранный оператор уже активен, то выходим из функции.
       if(currentButton.classList.contains('disabled')) {
@@ -28,7 +27,7 @@ export default {
       currentButton.classList.add('disabled')
 
       // Обновляем текущий оператор.
-      this.currentOperator = chosenOperator
+      this.currentOperator = operator
     },
 
     // Убираем у всех кнопок класс disabled.
@@ -88,10 +87,10 @@ export default {
         <h2 class="calculator-title">Calculator</h2>
         <div class="calculator-interface" ref="calcInterface">
           <input type="text" :value="firstOperand" @input="setFirstOperand">
-          <button @click="switchOperator" class="disabled">+</button>
-          <button @click="switchOperator">-</button>
-          <button @click="switchOperator">*</button>
-          <button @click="switchOperator">/</button>
+          <button @click="switchOperator('+', $event)" class="disabled">+</button>
+          <button @click="switchOperator('-', $event)">-</button>
+          <button @click="switchOperator('*', $event)">*</button>
+          <button @click="switchOperator('/', $event)">/</button>
           <input type="text" :value="secondOperand" @input="setSecondOperand">
         </div>
         <span class="calculator-text">Result: {{ computeResult }}</span>
