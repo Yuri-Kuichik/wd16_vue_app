@@ -4,22 +4,56 @@ import BaseLayout from '../components/BaseLayout.vue'
 export default {
   components: {
     BaseLayout
+  },
+
+  data() {
+    return {
+      counter: 0,
+      doubleCounter: 0
+    }
+  },
+
+  methods: {
+    increment() {
+      this.counter++
+    },
+
+    decrement() {
+      this.counter--
+    }
+  },
+
+  computed: {
+    doubleCounter() {
+      return this.counter * 2
+    }
   }
 }
 </script>
 
 <template>
   <BaseLayout>
-    <section class="counter-section">
+    <section 
+      class="counter-section" 
+      @click="clickOnSection"
+    >
       <div class="counter-wrapper">
         <h2 class="counter-title">Counter</h2>
 
         <div>
-          <span class="counter-text">Value: </span>
+          <span class="counter-text">Value: {{ counter }}</span>
         </div>
         <div>
-          <span class="counter-text">Double value: </span>
+          <span class="counter-text">Double value: {{ doubleCounter }} </span>
         </div>
+
+        <button 
+          class="btn" @click="increment">
+          Increment
+        </button>
+        <button class="btn" @click="decrement">
+          Decrement
+        </button>
         
       </div>
     </section>
