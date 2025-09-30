@@ -4,6 +4,36 @@ import BaseLayout from '../components/BaseLayout.vue'
 export default {
   components: {
     BaseLayout
+  },
+
+  data() {
+    return {
+      operand1: 0,
+      operand2: 0,
+      operator: '+',
+      msg: '',
+      checked: false,
+      selected: 'A'
+    }
+  },
+
+  computed: {
+    result() {
+      switch (this.operator) {
+        case '+':
+          return this.operand1 + this.operand2;
+        case '-':
+          return this.operand1 - this.operand2;
+        case '*':
+          return this.operand1 * this.operand2;
+        case '/':
+          return this.operand2 !== 0 ? (this.operand1 / this.operand2) : "Avoid dividing by zero";
+        case '':
+          return "Enter values and select an operation";
+        default:
+          return 0;
+      }
+    }
   }
 }
 </script>
@@ -13,8 +43,23 @@ export default {
     <section class="calculator-section">
       <div class="calculator-wrapper">
         <h2 class="calculator-title">Calculator</h2>
-        
-        <span class="calculator-text">Result: </span>
+        <input 
+          v-model.number="operand1"
+          type="number"
+          required
+        >
+        <input 
+          v-model.number="operand2"
+          type="number" 
+          required 
+        >
+        <div class="calculator-buttons-wrapper">
+          <button class="calculator-button" @click="operator = '+'"> +</button>
+          <button class="calculator-button" @click="operator = '-'"> -</button>
+          <button class="calculator-button" @click="operator = '*'"> *</button>
+          <button class="calculator-button" @click="operator = '/'"> /</button>
+        </div>
+        <span class="calculator-text">Result: {{ result }}</span>
       </div>
     </section>
   </BaseLayout>
