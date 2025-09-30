@@ -4,6 +4,78 @@ import BaseLayout from '../components/BaseLayout.vue'
 export default {
   components: {
     BaseLayout
+  },
+  data() {
+    return {
+      firstOperand: 0,
+      secondOperand: 0,
+      currentOperator: '+',
+    }
+  },
+  methods: {
+    // Переключаем оператор. По умолчанию включен оператор сложения.
+    switchOperator(operator, e) {
+      const currentButton = e.target.closest('button')
+
+      // Если выбранный оператор уже активен, то выходим из функции.
+      if(currentButton.classList.contains('disabled')) {
+        return
+      }
+
+      // Делаем все кнопки активными, а потом деактивируем кнопку с выбранным оператором.
+      this.enableAllButtons()
+      currentButton.classList.add('disabled')
+
+      // Обновляем текущий оператор.
+      this.currentOperator = operator
+    },
+
+    // Убираем у всех кнопок класс disabled.
+    enableAllButtons() {
+      const buttons = this.$refs.calcInterface.querySelectorAll('button')
+      buttons.forEach((button) => {
+        button.classList.remove('disabled')
+      })
+    },
+
+    // Отслеживаем изменения в полях с операндами и обновляем их значения в data().
+    // Если введено не число, или строка ввода не пуста, то не меняем значение count.
+    setFirstOperand(e) {
+      const newFirstOperand = e.target.value
+      if (this.isCorrectOperandValue(newFirstOperand)) {
+        this.firstOperand = e.target.value
+      } else {
+        e.target.value = this.firstOperand
+      }
+    },
+    setSecondOperand(e) {
+      const newSecondOperand = e.target.value
+      if (this.isCorrectOperandValue(newSecondOperand)) {
+        this.secondOperand = e.target.value
+      } else {
+        e.target.value = this.secondOperand
+      }
+    },
+
+    // Проверяем, чтобы новое значение оператора было либо числом, либо нулём, либо пустой строкой.
+    isCorrectOperandValue(value) {
+      return !!(Number(value) || value === '0' || value.length === 0);
+    }
+  },
+  computed: {
+    // Вычисляем результат, в зависимости от текущего выбранного оператора currentOperator. По умолчанию '+'.
+    computeResult() {
+      switch (this.currentOperator) {
+        case "+":
+          return +this.firstOperand + +this.secondOperand
+        case "-":
+          return this.firstOperand - this.secondOperand
+        case "*":
+          return this.firstOperand * this.secondOperand
+        case "/":
+          return this.firstOperand / this.secondOperand
+      }
+    }
   }
 }
 </script>
@@ -13,8 +85,15 @@ export default {
     <section class="calculator-section">
       <div class="calculator-wrapper">
         <h2 class="calculator-title">Calculator</h2>
-        
-        <span class="calculator-text">Result: </span>
+        <div class="calculator-interface" ref="calcInterface">
+          <input type="text" :value="firstOperand" @input="setFirstOperand">
+          <button @click="switchOperator('+', $event)" class="disabled">+</button>
+          <button @click="switchOperator('-', $event)">-</button>
+          <button @click="switchOperator('*', $event)">*</button>
+          <button @click="switchOperator('/', $event)">/</button>
+          <input type="text" :value="secondOperand" @input="setSecondOperand">
+        </div>
+        <span class="calculator-text">Result: {{ computeResult }}</span>
       </div>
     </section>
   </BaseLayout>
@@ -32,6 +111,7 @@ export default {
   margin: auto;
   max-width: 250px;
   text-align: center;
+
 }
 
 .calculator-buttons-wrapper {
@@ -41,6 +121,7 @@ export default {
 }
 
 button {
+  margin-bottom: 5px;
   display: flex;
   flex-grow: 1;
   align-items: center;
@@ -83,5 +164,9 @@ input {
   &:focus-visible {
     border: 3px solid rgb(253, 211, 42);
   }
+}
+
+.calculator-interface {
+
 }
 </style>
