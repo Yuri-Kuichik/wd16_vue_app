@@ -111,7 +111,6 @@ export default {
   margin: auto;
   max-width: 250px;
   text-align: center;
-
 }
 
 .calculator-buttons-wrapper {
@@ -164,9 +163,5 @@ input {
   &:focus-visible {
     border: 3px solid rgb(253, 211, 42);
   }
-}
-
-.calculator-interface {
-
 }
 </style>
