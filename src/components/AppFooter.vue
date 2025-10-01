@@ -1,9 +1,8 @@
 <script>
-import BaseLayout from './BaseLayout.vue';
 import IconLogoTMS from '@/assets/icons/LogoTMS.vue';
 
 export default {
-  components: { BaseLayout, IconLogoTMS, }
+  components: { IconLogoTMS, }
 }
 </script>
 
