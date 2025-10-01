@@ -40,7 +40,7 @@ export default {
         </div>
         <button @click="increaseCount">Increase</button>
         <button @click="decreaseCount">Decrease</button>
-        
+
       </div>
     </section>
   </BaseLayout>
