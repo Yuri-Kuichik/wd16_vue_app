@@ -3,6 +3,29 @@
 export default {
   components: {
     BaseLayout
+  },
+
+  data() {
+    return {
+      counter: 0,
+      doubleCounter: 0
+    }
+  },
+
+  methods: {
+    increment() {
+      this.counter++
+    },
+
+    decrement() {
+      this.counter--
+    }
+  },
+
+  computed: {
+    doubleCounter() {
+      return this.counter * 2
+    }
   }
 }
 </script>
