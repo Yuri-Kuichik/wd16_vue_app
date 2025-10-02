@@ -1,10 +1,6 @@
 <script>
 
 export default {
-  components: {
-    BaseLayout
-  },
-
   data() {
     return {
       operand1: 0,
