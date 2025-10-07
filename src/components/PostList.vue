@@ -1,5 +1,8 @@
 <script>
+import PostListItem from "@/components/PostListItem.vue";
+
 export default {
+  components: {PostListItem},
   data() {
     return {
       postListArray: [],
@@ -12,7 +15,16 @@ export default {
     async getPostList() {
       const response = await fetch('https://studapi.teachmeskills.by/blog/posts/?author__course_group=15&limit=5')
       const data = await response.json()
-      return await data.results
+      return data.results
+    },
+    // По id поста получаем информацию от удалённого сервера.
+    async showPostPage(id) {
+      const data = await this.getPost(id)
+      console.log(data)
+    },
+    async getPost(id) {
+      const response = await fetch(`https://studapi.teachmeskills.by/blog/posts/${id}/`)
+      return await response.json()
     }
   }
 }
@@ -21,58 +33,21 @@ export default {
 
 <template>
   <div class="post-list">
-    <div class="post-list-item" v-for="({ title, description, image, date }) in postListArray">
-      <div class="item-content-wrapper">
-        <div class="img-wrapper">
-          <img :src=image>
-        </div>
-        <div class="text-wrapper">
-          <h3>{{ title }}</h3>
-          <p class="post-date">от {{ date }}</p>
-          <p class="post-description">{{ description }}</p>
-        </div>
-      </div>
-    </div>
+    <PostListItem
+        v-for="post in postListArray"
+        :key="post.id"
+        :post-data=post
+        @show-post-page="showPostPage"
+    />
   </div>
 </template>
 
 <style scoped>
+
 .post-list {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-}
-
-.post-list-item {
-  padding: 20px;
-  max-width: 33%;
-
-}
-
-.item-content-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  cursor: pointer;
-}
-
-.img-wrapper {
-  width: 200px;
-  height: 150px;
-}
-
-img {
   width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-h3 {
-  text-align: center;
-}
-
-.post-date {
-  margin-bottom: 10px;
-  text-align: center;
-  font-size: 14px;
 }
 </style>
