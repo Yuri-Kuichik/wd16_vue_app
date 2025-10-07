@@ -10,6 +10,7 @@
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/counter">Counter</RouterLink>
         <RouterLink to="/calculator">Calculator</RouterLink>
+        <RouterLink to="/login">Login</RouterLink>
       </nav>
       <div class="btn-sign-out"><b>Sign out</b></div>
     </BaseLayout>
