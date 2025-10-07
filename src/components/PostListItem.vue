@@ -3,29 +3,35 @@ export default {
   props: {
     postData: {
       type: Object,
-      default: {}
+      default: ()=>({})
     }
   }
 }
 </script>
 
 <template>
-  <div
-      class="item-content-wrapper"
-      @click="$emit(`showPostPage`, postData.id)"
-  >
-    <div class="img-wrapper">
-      <img :src=postData.image>
-    </div>
-    <div class="text-wrapper">
-      <h3>{{ postData.title }}</h3>
-      <p class="post-date">от {{ postData.date }}</p>
-      <p class="post-description">{{ postData.description }}</p>
+  <div class="post-list-item">
+    <div
+        class="item-content-wrapper"
+        @click="$emit(`showPostPage`, postData.id)"
+    >
+      <div class="img-wrapper">
+        <img :src=postData.image>
+      </div>
+      <div class="text-wrapper">
+        <h3>{{ postData.title }}</h3>
+        <p class="post-date">от {{ postData.date }}</p>
+        <p>{{ postData.description }}</p>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+.post-list-item {
+  padding: 20px;
+  max-width: 33%;
+}
 
 .item-content-wrapper {
   display: flex;

@@ -19,9 +19,12 @@ export default {
     },
     // По id поста получаем информацию от удалённого сервера.
     async showPostPage(id) {
-      const response = await fetch(`https://studapi.teachmeskills.by/blog/posts/${id}/`)
-      const data = await response.json()
+      const data = await this.getPost(id)
       console.log(data)
+    },
+    async getPost(id) {
+      const response = await fetch(`https://studapi.teachmeskills.by/blog/posts/${id}/`)
+      return await response.json()
     }
   }
 }
@@ -30,12 +33,12 @@ export default {
 
 <template>
   <div class="post-list">
-    <div class="post-list-item" v-for="post in postListArray" :key="post.id">
-      <PostListItem
-          :post-data=post
-          @show-post-page="showPostPage"
-      />
-    </div>
+    <PostListItem
+        v-for="post in postListArray"
+        :key="post.id"
+        :post-data=post
+        @show-post-page="showPostPage"
+    />
   </div>
 </template>
 
@@ -46,10 +49,5 @@ export default {
   flex-direction: row;
   flex-wrap: wrap;
   width: 100%;
-}
-
-.post-list-item {
-  padding: 20px;
-  max-width: 33%;
 }
 </style>
