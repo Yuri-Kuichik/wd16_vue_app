@@ -7,7 +7,7 @@ export default {
     },
     text: {
       type: String,
-      default: 'Click me, please'
+      default: 'Click me'
     },
     isDisabled: {
       type: Boolean,
@@ -38,7 +38,12 @@ export default {
   >
     <VueSpinner v-if="loading"/>
     <span v-else>
-      {{ text }}
+      <template v-if="$slots.default">
+        <slot/>
+      </template>
+      <template v-else>
+        {{ text }}
+      </template>
     </span>
   </button>
 

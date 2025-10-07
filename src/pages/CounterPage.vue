@@ -1,10 +1,8 @@
 <script>
-
 export default {
   data() {
     return {
-      counter: 0,
-      doubleCounter: 0
+      counter: 0
     }
   },
 
@@ -28,12 +26,8 @@ export default {
 
 <template>
   <BaseLayout>
-    <section 
-      class="counter-section" 
-      @click="clickOnSection"
-    >
+    <section class="counter-section">
       <div class="counter-wrapper">
-        <h2 class="counter-title">Counter</h2>
 
         <div>
           <span class="counter-text">Value: {{ counter }}</span>
@@ -42,14 +36,11 @@ export default {
           <span class="counter-text">Double value: {{ doubleCounter }} </span>
         </div>
 
-        <button 
-          class="btn" @click="increment">
-          Increment
-        </button>
-        <button class="btn" @click="decrement">
-          Decrement
-        </button>
-        
+        <div class="d-flex">
+          <BaseButton text="Increment" @click="increment" />
+          <BaseButton text="Decrement" @click="decrement" />
+        </div>
+       
       </div>
     </section>
   </BaseLayout>
@@ -93,6 +84,10 @@ button {
   &.disabled {
     cursor: cell;
     background: rgba(253, 211, 42, 0.5);
+  }
+
+  &:not(:last-child) {
+    margin-right: 4px;
   }
 }
 
