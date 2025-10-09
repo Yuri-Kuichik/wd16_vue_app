@@ -16,7 +16,8 @@ app.component('BaseLayout', BaseLayout)
 app.component('VueSpinner', VueSpinner)
 app.component('BaseButton', BaseButton)
 
-app.use(createPinia())
+const pinia = createPinia()
+app.use(pinia)
 app.use(router)
 
 app.mount('#app')

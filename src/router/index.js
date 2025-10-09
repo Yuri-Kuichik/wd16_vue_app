@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomePage from '../pages/HomePage.vue';
 import CounterPage from '@/pages/CounterPage.vue';
 import CalculatorPage from '@/pages/CalculatorPage.vue';
+import { useAuthStore } from '@/stores/auth';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -10,7 +11,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomePage,
+      component: HomePage
     },
     {
       path: '/calculator',
@@ -33,6 +34,16 @@ const router = createRouter({
       component: () => import('../pages/PostPage.vue')
     }
   ],
+})
+
+router.beforeEach( (to, from, next) => {
+  const authStore = useAuthStore();
+  console.log(authStore.isAuth())
+  if (!authStore.isAuth() && to.name !== 'login') {
+    next({ name: 'login' })
+  } else {
+    next()
+  }
 })
 
 export default router

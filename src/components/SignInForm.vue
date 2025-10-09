@@ -1,5 +1,6 @@
 <script>
 import FormInput from './FormInput.vue';
+import { useAuthStore } from '@/stores/auth';
 
 export default {
   components: {
@@ -12,7 +13,8 @@ export default {
       passwordFieldType: 'password',
       passwordMsgError: '',
       emailMsgErr: '',
-      loading: false
+      loading: false,
+      authStore: useAuthStore()
     }
   },
 
@@ -34,7 +36,7 @@ export default {
         password: this.password,
       }
 
-      console.log(data)
+      await this.authStore.login(data)
     }
   },
 }
