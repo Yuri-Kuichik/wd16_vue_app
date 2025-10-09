@@ -16,15 +16,6 @@ export default {
       const response = await fetch('https://studapi.teachmeskills.by/blog/posts/?author__course_group=15&limit=5')
       const data = await response.json()
       return data.results
-    },
-    // По id поста получаем информацию от удалённого сервера.
-    async showPostPage(id) {
-      const data = await this.getPost(id)
-      console.log(data)
-    },
-    async getPost(id) {
-      const response = await fetch(`https://studapi.teachmeskills.by/blog/posts/${id}/`)
-      return await response.json()
     }
   }
 }
@@ -37,7 +28,6 @@ export default {
         v-for="post in postListArray"
         :key="post.id"
         :post-data=post
-        @show-post-page="showPostPage"
     />
   </div>
 </template>
