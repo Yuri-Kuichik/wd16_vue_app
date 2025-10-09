@@ -1,7 +1,28 @@
 <script>
+import BaseLayout from '../components/BaseLayout.vue'
 
 export default {
- 
+  components: {
+    BaseLayout
+  },
+  data() {
+    return {
+      count: 0,
+    }
+  },
+  methods: {
+    increaseCount() {
+      return this.count++
+    },
+    decreaseCount() {
+      return this.count--
+    },
+  },
+  computed: {
+    doubleCount() {
+      return this.count*2
+    }
+  }
 }
 </script>
 
@@ -12,12 +33,14 @@ export default {
         <h2 class="counter-title">Counter</h2>
 
         <div>
-          <span class="counter-text">Value: </span>
+          <span class="counter-text">Value: {{ count }}</span>
         </div>
         <div>
-          <span class="counter-text">Double value: </span>
+          <span class="counter-text">Double value: {{ doubleCount }}</span>
         </div>
-        
+        <button @click="increaseCount">Increase</button>
+        <button @click="decreaseCount">Decrease</button>
+
       </div>
     </section>
   </BaseLayout>

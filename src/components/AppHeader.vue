@@ -1,9 +1,5 @@
 <script>
-import BaseLayout from './BaseLayout.vue';
 
-export default {
-  components: { BaseLayout }
-}
 </script>
 
 <template>
