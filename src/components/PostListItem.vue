@@ -13,7 +13,7 @@ export default {
   <div class="post-list-item">
     <div
         class="item-content-wrapper"
-        @click="$emit(`showPostPage`, postData.id)"
+        @click="this.$router.push({name: 'post', params: {id: postData.id}})"
     >
       <div class="img-wrapper">
         <img :src=postData.image>
