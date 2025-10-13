@@ -1,12 +1,23 @@
 <script>
+import { useAuthStore } from "@/stores/auth.js";
 
+export default {
+  data() {
+    return {
+      authStore: useAuthStore()
+    }
+  }
+}
 </script>
 
 <template>
   <div class="app-header">
     <BaseLayout class="header-section">
       <img class="logo" src="/src/assets/logo.svg" alt="logo Vue">
-      <nav class="d-flex">
+      <nav
+          class="d-flex"
+          v-if="this.authStore.isAuth()"
+      >
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/counter">Counter</RouterLink>
         <RouterLink to="/calculator">Calculator</RouterLink>
