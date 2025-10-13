@@ -1,5 +1,6 @@
 <script>
 import BaseLayout from '../components/BaseLayout.vue'
+import { store } from "@/stores/store.js";
 
 export default {
   components: {
@@ -8,6 +9,7 @@ export default {
   data() {
     return {
       count: 0,
+      store
     }
   },
   methods: {
@@ -33,13 +35,13 @@ export default {
         <h2 class="counter-title">Counter</h2>
 
         <div>
-          <span class="counter-text">Value: {{ count }}</span>
+          <span class="counter-text">Value: {{ store.count }}</span>
         </div>
         <div>
           <span class="counter-text">Double value: {{ doubleCount }}</span>
         </div>
-        <button @click="increaseCount">Increase</button>
-        <button @click="decreaseCount">Decrease</button>
+        <button @click="store.increment">Increase</button>
+        <button @click="store.decrement">Decrease</button>
 
       </div>
     </section>
