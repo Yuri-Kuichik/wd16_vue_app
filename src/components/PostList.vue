@@ -16,6 +16,9 @@ export default {
       const response = await fetch('https://studapi.teachmeskills.by/blog/posts/?author__course_group=15&limit=5')
       const data = await response.json()
       return data.results
+    },
+    showPostPage(postId) {
+      this.$router.push({name: 'post', params: {id: postId}})
     }
   }
 }
@@ -28,6 +31,7 @@ export default {
         v-for="post in postListArray"
         :key="post.id"
         :post-data=post
+        @click="showPostPage(post.id)"
     />
   </div>
 </template>

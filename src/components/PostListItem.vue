@@ -11,10 +11,7 @@ export default {
 
 <template>
   <div class="post-list-item">
-    <div
-        class="item-content-wrapper"
-        @click="this.$router.push({name: 'post', params: {id: postData.id}})"
-    >
+    <div class="item-content-wrapper">
       <div class="img-wrapper">
         <img :src=postData.image>
       </div>
