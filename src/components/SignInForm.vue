@@ -1,6 +1,7 @@
 <script>
 import FormInput from '@/components/FormInput.vue';
 import BaseButton from "@/components/BaseButton.vue";
+import {useAuthStore} from "@/stores/auth.js";
 
 export default {
   components: {
@@ -9,6 +10,7 @@ export default {
   },
   data() {
     return {
+      authStore: useAuthStore(),
       email: '',
       password: '',
       passwordFieldType: 'password'
@@ -16,10 +18,17 @@ export default {
   },
   methods: {
     sendForm() {
-      console.log(`email: ${this.email}, password: ${this.password}`)
+      const userData = {
+        email: this.email,
+        password: this.password
+      }
+      this.authorizeUser(userData)
     },
     switchType() {
       this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password'
+    },
+    async authorizeUser(userData) {
+      await this.authStore.login(userData)
     }
   },
   computed: {
