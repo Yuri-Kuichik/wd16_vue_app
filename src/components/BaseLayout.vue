@@ -21,7 +21,7 @@ export default {
 <style scoped>
 .base-layout  {
   width: 1280px;
-  padding: 3rem 1rem;
+  padding: 1rem;
   margin: 0 auto;
   max-width: 100%;
 }
