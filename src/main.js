@@ -2,6 +2,7 @@ import './assets/styles/main.css'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import { markRaw } from 'vue'
 
 import App from './App.vue'
 import router from './router'
@@ -19,5 +20,9 @@ app.component('BaseButton', BaseButton)
 const pinia = createPinia()
 app.use(pinia)
 app.use(router)
+
+pinia.use(({ store }) => {
+  store.router = markRaw(router);
+});
 
 app.mount('#app')

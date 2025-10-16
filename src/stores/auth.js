@@ -8,15 +8,13 @@ export const useAuthStore = defineStore('auth', {
             refreshToken: '',
             accessToken: '',
             tokenKey: 'postApp__accessToken',
-            tokenRefreshKey: 'postApp__refreshToken',
+            refreshTokenKey: 'postApp__refreshToken',
             loading: false
         }
     },
 
     getters: {
-        // isAuth() {
-        //     return true
-        // }
+        
     },
 
     actions: {
@@ -66,54 +64,33 @@ export const useAuthStore = defineStore('auth', {
         },
         
         setCookie() {
-            cookie.remove(this.tokenRefreshKey)
-            cookie.remove(this.tokenKey)
-
             const decoded = jwtDecode(this.accessToken);
-            console.log('decoded token: ', decoded)
-            const dateExp = new Date(decoded.exp * 1000)
 
-            console.log('setCookie')
+            let expTime = new Date(decoded.exp * 1000)
+            console.log('Date expire: ', expTime)
             
             cookie.set(
                 this.tokenKey, 
                 this.accessToken, 
-                { expires: dateExp }
-            )
-            cookie.set(this.tokenRefreshKey, this.refreshToken)
-        },
-
-        setCookie() {
-            const payload = jwtDecode(this.accessToken)
-
-            let expTime = payload.exp * 1000
-            console.log('Date expire: ', new Date(expTime))
-
-            // let curTime = new Date().getTime();
-            // let expTimeOneMinute = curTime + 30*1000
-            // console.log('Date expire one minute: ', new Date(expTimeOneMinute))
-
-            cookie.set(
-                this.tokenKey, 
-                this.accessToken,
-                {expires: new Date(expTime)} 
+                { expires: expTime }
             )
             cookie.set(this.refreshTokenKey, this.refreshToken)
         },
 
         isAuth() {
-            return !!cookie.get(this.tokenKey);
+            return this.isTokenExist() || this.isRefreshTokenExist()
         },
 
         isTokenExist() {
-            this.isAuth();
+            return !!cookie.get(this.tokenKey);
         },
 
         isRefreshTokenExist() {
             return !!cookie.get(this.refreshTokenKey);
         },
 
-        removeCookie() {
+        removeCookies() {
+            console.log('removeCookies')
             cookie.remove(this.tokenKey);
             cookie.remove(this.refreshTokenKey);
         },
@@ -121,7 +98,7 @@ export const useAuthStore = defineStore('auth', {
         signOut() {
             this.accessToken = '';
             this.refreshToken = '';
-            this.removeCookie();
+            this.removeCookies();
         }
     } 
 })

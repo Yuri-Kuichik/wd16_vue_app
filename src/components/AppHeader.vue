@@ -3,12 +3,37 @@ import BaseLayout from './BaseLayout.vue';
 import { useAuthStore } from '@/stores/auth';
 
 export default {
+  setup() {
+    const authStore = useAuthStore(); 
+    return {
+      authStore
+    }
+  },
+
   components: { BaseLayout },
+
   data() {
     return {
-      authStore: useAuthStore()
+      is_auth: false,
     }
-  } 
+  },
+  
+  watch: {
+    authStore: {
+      handler(state) {
+        this.is_auth = state.isAuth()
+      },
+      deep: true
+    }
+  },
+
+  methods: {
+    signOut() {
+      this.authStore.signOut();
+
+      this.$router.push('/login')
+    }
+  },
 }
 </script>
 
@@ -16,13 +41,18 @@ export default {
   <div class="app-header">
     <BaseLayout class="header-section">
       <img class="logo" src="/src/assets/logo.svg" alt="logo Vue">
-      <nav v-if="authStore.isAuth()" class="d-flex">
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/counter">Counter</RouterLink>
-        <RouterLink to="/calculator">Calculator</RouterLink>
-        <RouterLink to="/login">Login</RouterLink>
-      </nav>
-      <div class="btn-sign-out"><b>Sign out</b></div>
+      <template v-if="is_auth">
+        <nav class="d-flex">
+          <RouterLink to="/">Home</RouterLink>
+          <RouterLink to="/counter">Counter</RouterLink>
+          <RouterLink to="/calculator">Calculator</RouterLink>
+          <!-- <RouterLink to="/login">Login</RouterLink> -->
+        </nav>
+        <div @click="signOut" class="btn-sign-out">
+          <b>Sign out</b>
+        </div>
+      </template>
+      
     </BaseLayout>
   </div>
 </template>
