@@ -1,5 +1,6 @@
 <script>
 import BaseLayout from './BaseLayout.vue';
+import FormInput from './FormInput.vue';
 import { useAuthStore } from '@/stores/auth';
 
 export default {
@@ -10,11 +11,14 @@ export default {
     }
   },
 
-  components: { BaseLayout },
+  components: { BaseLayout, FormInput },
 
   data() {
     return {
       is_auth: false,
+      newEmail: '',
+      isShowModalWindow: false,
+      password: ''
     }
   },
   
@@ -32,8 +36,16 @@ export default {
       this.authStore.signOut();
 
       this.$router.push('/login')
-    }
-  },
+    },
+
+    openModalChangeEmail() {
+      this.isShowModalWindow = true
+    },
+
+    closeModalChangeEmail() {
+      this.isShowModalWindow = false
+    },
+  }
 }
 </script>
 
@@ -48,12 +60,41 @@ export default {
           <RouterLink to="/calculator">Calculator</RouterLink>
           <!-- <RouterLink to="/login">Login</RouterLink> -->
         </nav>
+        <div @click="openModalChangeEmail" class="btn-sign-out">
+          <b>Change email</b>
+        </div>
         <div @click="signOut" class="btn-sign-out">
           <b>Sign out</b>
         </div>
       </template>
       
     </BaseLayout>
+
+    <BaseModal v-if="isShowModalWindow" @close="closeModalChangeEmail">
+      <template #header>
+        <h3>Change email</h3>
+      </template>
+      <template #description>
+        <FormInput 
+          label="New email"
+          placeholder="Enter new email"
+          v-model="newEmail"
+        />
+        <FormInput 
+          label="Password"
+          placeholder="Enter new password"
+          v-model="password"
+        />
+      </template>
+      <template v-slot:action>
+        <BaseButton 
+          @click.stop="authStore.setNewEmail(newEmail, password)"
+          :loading="authStore.loading"
+        >
+          <span>send</span>
+        </BaseButton>
+      </template>
+    </BaseModal>
   </div>
 </template>
 

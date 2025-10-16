@@ -12,10 +12,12 @@ const app = createApp(App)
 import BaseLayout from './components/BaseLayout.vue'
 import VueSpinner from './components/VueSpinner.vue'
 import BaseButton from './components/BaseButton.vue'
+import BaseModal from './components/BaseModal.vue'
 
 app.component('BaseLayout', BaseLayout)
 app.component('VueSpinner', VueSpinner)
 app.component('BaseButton', BaseButton)
+app.component('BaseModal', BaseModal)
 
 const pinia = createPinia()
 app.use(pinia)

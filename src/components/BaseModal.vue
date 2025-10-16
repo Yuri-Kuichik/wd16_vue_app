@@ -9,9 +9,9 @@ export default {
 </script>
 
 <template>
-  <div class="modal-wrapper">
+  <div class="modal-wrapper" @click="$emit('close')">
     <div class="modal">
-        <div class="modal-content">
+        <div class="modal-content" @click.stop>
           <h2 v-if="$slots.header" class="d-flex d-flex_jcc">
             <slot name="header"></slot>
           </h2>

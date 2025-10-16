@@ -46,17 +46,95 @@ export const useAuthStore = defineStore('auth', {
                 this.loading = false
             }
         },
+
+        async registration(data) {
+            this.loading = true;
+            try {
+                const res = await fetch('https://studapi.teachmeskills.by//auth/users/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+            } catch(error) {
+                console.log(error.message)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async activateUser(data) {
+            this.loading = true;
+            try {
+                const res = await fetch('https://studapi.teachmeskills.by//auth/users/activation/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+            } catch(error) {
+                console.log(error.message)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async setNewEmail(newEmail, password) {
+            this.loading = true;
+
+            const data = {
+                "current_password": password,
+                "new_email": newEmail
+            }
+
+            if (!this.isTokenExist() && this.isRefreshTokenExist()) {
+                try {
+                    await this.getNewToken()
+                } catch(error) {
+                    console.log(error.message)
+                }
+            } else {
+                this.accessToken = this.getAccessToken()
+            }
+
+            try {
+                await fetch('https://studapi.teachmeskills.by//auth/users/set_email/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${this.accessToken}`
+                    },
+                    body: JSON.stringify(data)
+                })
+            } catch(error) {
+                console.log(error.message)
+            } finally {
+                this.loading = false
+            }
+        },
         
         async getNewToken() {
-            const token = cookie.get(this.refreshTokenKey)
+            this.refreshToken = this.getRefreshToken()
 
-            if(token) {
-                const data = {refresh: token}
-
+            if(this.refreshToken) {
                 try {
-                    const res = await instanceAxios.post('/auth/jwt/refresh/', data);
-                    this.accessToken = res.data.access;
-                    this.setCookie();
+                    const res = await fetch('https://studapi.teachmeskills.by//auth/jwt/refresh/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            refresh: this.refreshToken
+                        })
+                    })
+
+                    if (res.ok) {
+                        const data = await res.json()
+                        this.accessToken = data.access
+                        this.setCookie();
+                    }
                 } catch(error) {
                     console.log(error.message)
                 }
@@ -66,7 +144,7 @@ export const useAuthStore = defineStore('auth', {
         setCookie() {
             const decoded = jwtDecode(this.accessToken);
 
-            let expTime = new Date(decoded.exp * 1000)
+            const expTime = new Date(decoded.exp * 1000)
             console.log('Date expire: ', expTime)
             
             cookie.set(
@@ -89,8 +167,15 @@ export const useAuthStore = defineStore('auth', {
             return !!cookie.get(this.refreshTokenKey);
         },
 
+        getAccessToken() {
+            return cookie.get(this.tokenKey)
+        },
+
+        getRefreshToken() {
+            return cookie.get(this.refreshTokenKey)
+        },
+
         removeCookies() {
-            console.log('removeCookies')
             cookie.remove(this.tokenKey);
             cookie.remove(this.refreshTokenKey);
         },
