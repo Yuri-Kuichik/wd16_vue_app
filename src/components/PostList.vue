@@ -7,10 +7,11 @@ export default {
   data() {
     return {
       postListArray: [],
+      postsStore: usePosts()
     }
   },
   async created() {
-    this.postListArray = await usePosts.getPostList()
+    this.postListArray = await this.postsStore.getPostList()
   },
   methods: {
     showPostPage(postId) {

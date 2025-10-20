@@ -6,6 +6,7 @@ export default {
   components: {VueSpinner},
   data() {
     return {
+      postStore: usePosts(),
       postId: this.$route.params.id,
       postData: []
     }
@@ -22,7 +23,7 @@ export default {
   },
 
   async created() {
-    const postDataResponse = await usePosts.getPostOrFail(this.postId)
+    const postDataResponse = await this.postStore.getPostOrFail(this.postId)
     this.redirectIfFailed(postDataResponse)
   }
 }

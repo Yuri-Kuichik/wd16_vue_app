@@ -14,7 +14,7 @@ export const useAuthStore = defineStore('auth', {
     actions: {
         async login(userData) {
             try {
-                const authResponse = fetch('https://studapi.teachmeskills.by/auth/jwt/create/)', {
+                const authResponse = await fetch('https://studapi.teachmeskills.by/auth/jwt/create/)', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -41,7 +41,7 @@ export const useAuthStore = defineStore('auth', {
         setCookies() {
             cookie.set(this.refreshTokenKey, this.refreshToken)
             // Устанавливаем время существования куки равным одной минуте.
-            cookie.set(this.accessTokenKey, this.accessToken, { expires: 1 / (24 * 60) })
+            cookie.set(this.accessTokenKey, this.accessToken, { expires: 1 })
         },
 
         isAuth() {
