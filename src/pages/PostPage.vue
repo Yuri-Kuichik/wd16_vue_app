@@ -1,6 +1,6 @@
 <script>
 import VueSpinner from "@/components/VueSpinner.vue";
-import {usePosts} from "@/stores/posts.js";
+import { usePosts } from "@/stores/posts.js";
 
 export default {
   components: {VueSpinner},

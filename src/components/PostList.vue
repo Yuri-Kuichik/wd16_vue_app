@@ -1,9 +1,9 @@
 <script>
 import PostListItem from "@/components/PostListItem.vue";
-import {usePosts} from "@/stores/posts.js";
+import { usePosts } from "@/stores/posts.js";
 
 export default {
-  components: {PostListItem},
+  components: { PostListItem },
   data() {
     return {
       postListArray: [],
