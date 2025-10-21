@@ -1,30 +1,30 @@
 <script>
 import VueSpinner from "@/components/VueSpinner.vue";
+import { usePosts } from "@/stores/posts.js";
 
 export default {
   components: {VueSpinner},
   data() {
     return {
+      postStore: usePosts(),
       postId: this.$route.params.id,
       postData: []
     }
   },
 
   methods: {
-    async getPost() {
-      const response = await fetch(`https://studapi.teachmeskills.by/blog/posts/${this.postId}/`)
-      this.redirectIfNotFound(response.status)
-      this.postData = await response.json()
-    },
-    redirectIfNotFound(status) {
-      if (status === 404) {
+    redirectIfFailed(postDataResponse) {
+      if (postDataResponse) {
+        this.postData = postDataResponse
+      } else {
         this.$router.push({name: 'postNotFound', param: 'post-not-found'})
       }
     }
   },
 
   async created() {
-    await this.getPost()
+    const postDataResponse = await this.postStore.getPostOrFail(this.postId)
+    this.redirectIfFailed(postDataResponse)
   }
 }
 </script>

@@ -1,7 +1,5 @@
 <script>
 import SignInForm from '@/components/SignInForm.vue';
-import FormInput from '@/components/FormInput.vue';
-import BaseButton from "@/components/BaseButton.vue";
 
 export default {
   components: {
@@ -12,6 +10,6 @@ export default {
 
 <template>
   <BaseLayout>
-    <SignInForm />
+    <SignInForm/>
   </BaseLayout>
 </template>

@@ -1,22 +1,19 @@
 <script>
 import PostListItem from "@/components/PostListItem.vue";
+import { usePosts } from "@/stores/posts.js";
 
 export default {
-  components: {PostListItem},
+  components: { PostListItem },
   data() {
     return {
       postListArray: [],
+      postsStore: usePosts()
     }
   },
   async created() {
-    this.postListArray = await this.getPostList()
+    this.postListArray = await this.postsStore.getPostList()
   },
   methods: {
-    async getPostList() {
-      const response = await fetch('https://studapi.teachmeskills.by/blog/posts/?author__course_group=15&limit=5')
-      const data = await response.json()
-      return data.results
-    },
     showPostPage(postId) {
       this.$router.push({name: 'post', params: {id: postId}})
     }
