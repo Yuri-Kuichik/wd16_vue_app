@@ -24,12 +24,9 @@ export default {
     }
   },
 
-  watch: {
-    authStore: {
-      handler(state) {
-        return state.isAuth()
-      },
-      deep: true
+  computed: {
+    checkAuthorization() {
+      return !!this.authStore.refreshToken.length;
     }
   }
 }
@@ -39,26 +36,23 @@ export default {
   <div class="app-header">
     <BaseLayout class="header-section">
       <img class="logo" src="/src/assets/logo.svg" alt="logo Vue">
-      <nav
-          class="d-flex"
-          v-if="authStore.isAuth()"
-      >
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/counter">Counter</RouterLink>
-        <RouterLink to="/calculator">Calculator</RouterLink>
-      </nav>
-      <div class="btn-sign-out"
-           v-if="authStore.isAuth()"
-           @click.stop="openModal"
-      >
-        <b>Change email</b>
-      </div>
-      <div class="btn-sign-out"
-           v-if="authStore.isAuth()"
-           @click.stop="authStore.logout()"
-      >
-        <b>Sign out</b>
-      </div>
+        <template v-if="checkAuthorization">
+          <nav class="d-flex">
+            <RouterLink to="/">Home</RouterLink>
+            <RouterLink to="/counter">Counter</RouterLink>
+            <RouterLink to="/calculator">Calculator</RouterLink>
+          </nav>
+          <div class="btn-sign-out"
+               @click.stop="openModal"
+          >
+            <b>Change email</b>
+          </div>
+          <div class="btn-sign-out"
+               @click.stop="authStore.logout()"
+          >
+            <b>Sign out</b>
+          </div>
+        </template>
     </BaseLayout>
     <BaseModal
       v-if="isModalOpen"

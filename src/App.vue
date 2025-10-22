@@ -2,11 +2,22 @@
 import { RouterLink, RouterView } from 'vue-router'
 import AppFooter from './components/AppFooter.vue'
 import AppHeader from './components/AppHeader.vue'
+import { useAuthStore } from "@/stores/auth.js";
 
 export default {
   components: {
     AppHeader,
     AppFooter
+  },
+
+  data() {
+    return {
+      authStore: useAuthStore()
+    }
+  },
+
+  created() {
+    this.authStore.setup()
   }
 }
 
