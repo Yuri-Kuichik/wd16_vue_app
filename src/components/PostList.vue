@@ -1,34 +1,62 @@
 <script>
 import PostListItem from "@/components/PostListItem.vue";
-import { usePosts } from "@/stores/posts.js";
+import {usePosts} from "@/stores/posts.js";
+import BaseInput from "@/components/BaseInput.vue";
+import BaseButton from "@/components/BaseButton.vue";
+
 
 export default {
-  components: { PostListItem },
+  components: {
+    BaseButton,
+    PostListItem,
+    BaseInput
+  },
   data() {
     return {
-      postListArray: [],
       postsStore: usePosts()
     }
   },
   async created() {
-    this.postListArray = await this.postsStore.getPostList()
-  },
-  methods: {
-    showPostPage(postId) {
-      this.$router.push({name: 'post', params: {id: postId}})
-    }
+    await this.postsStore.getPostList()
   }
 }
 
 </script>
 
 <template>
+  <div class="search-wrapper d-flex">
+    <BaseInput
+        name="search"
+        placeholder="Поиск"
+        v-model="postsStore.getParams.search"
+    />
+    <BaseButton
+        text="Найти"
+        size="s"
+        @click="postsStore.getPostList()"
+    />
+  </div>
+  <div class="pagination d-flex">
+    <BaseButton
+        v-show="postsStore.postListData.previous"
+        text="Предыдущая"
+        size="s"
+        @click="postsStore.turnPage('previous')"
+    />
+    <div class="filler"></div>
+    <BaseButton
+        v-show="postsStore.postListData.next"
+        text="Следующая"
+        size="s"
+        @click="postsStore.turnPage('next')"
+    />
+  </div>
   <div class="post-list">
     <PostListItem
-        v-for="post in postListArray"
+        v-for="post in postsStore.postListData.results"
         :key="post.id"
         :post-data=post
-        @click="showPostPage(post.id)"
+        @click="postsStore.showPostPage(post.id)"
     />
   </div>
 </template>
@@ -40,5 +68,13 @@ export default {
   flex-direction: row;
   flex-wrap: wrap;
   width: 100%;
+}
+
+.search-wrapper, .pagination {
+  margin-bottom: 20px;
+}
+
+.filler {
+  flex-grow: inherit;
 }
 </style>

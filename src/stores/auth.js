@@ -81,7 +81,7 @@ export const useAuthStore = defineStore('auth', {
             const isAccessAllowed = this.getAccessCookie()
 
             if (!isAccessAllowed) {
-               await this.updateAccessToken()
+                await this.updateAccessToken()
             }
 
             try {

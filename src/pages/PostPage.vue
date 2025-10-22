@@ -6,31 +6,18 @@ export default {
   components: {VueSpinner},
   data() {
     return {
-      postStore: usePosts(),
-      postId: this.$route.params.id,
-      postData: []
-    }
-  },
-
-  methods: {
-    redirectIfFailed(postDataResponse) {
-      if (postDataResponse) {
-        this.postData = postDataResponse
-      } else {
-        this.$router.push({name: 'postNotFound', param: 'post-not-found'})
-      }
+      postsStore: usePosts()
     }
   },
 
   async created() {
-    const postDataResponse = await this.postStore.getPostOrFail(this.postId)
-    this.redirectIfFailed(postDataResponse)
+    await this.postsStore.getPostOrFail()
   }
 }
 </script>
 
 <template>
-  <div v-if="!postData" class="not-found-spinner">
+  <div v-if="!postsStore.postData" class="not-found-spinner">
     <VueSpinner
         size="l"
         class="not-found-spinner"
@@ -38,12 +25,12 @@ export default {
   </div>
   <BaseLayout v-else>
     <div>
-      <h3 class="post-header">{{ postData.title }}</h3>
-      <div class="post-date">{{ postData.date }}</div>
+      <h3 class="post-header">{{ postsStore.postData.title }}</h3>
+      <div class="post-date">{{ postsStore.postData.date }}</div>
       <div class="post-img-wrapper">
-        <img class="post-img" :src="postData.image"/>
+        <img class="post-img" :src="postsStore.postData.image"/>
       </div>
-      <div class="post-text">{{ postData.text }}</div>
+      <div class="post-text">{{ postsStore.postData.text }}</div>
     </div>
   </BaseLayout>
 
