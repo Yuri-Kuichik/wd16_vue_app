@@ -1,25 +1,22 @@
 <script>
+import { usePostsStore } from '@/stores/posts';
 import PostListItem from '@/components/PostListItem.vue'
+import FormInput from './FormInput.vue';
 
 export default {
   components: {
-    PostListItem
+    PostListItem,
+    FormInput
   },
 
   data() {
     return {
+      postsStore: usePostsStore(),
       postListData: [],
-      loading: false
     }
   },
 
   methods: {
-    async getPostList(url) {
-      const res = await fetch('https://studapi.teachmeskills.by/blog/posts/?author__course_group=15&limit=5')
-      const data = await res.json()
-      this.postListData = data.results
-    },
-
     openPagePost(poistId) {
       console.log('post id: ', poistId)
 
@@ -50,9 +47,7 @@ export default {
   },
 
   async created() {
-    this.loading = true;
-    await this.getPostList();
-    this.loading = false;
+    await this.postsStore.getPostList()
   }
 }
 
@@ -61,12 +56,35 @@ export default {
 <template>
   <section class="post-list">
     <div class="pagination-wrapper">
-      <BaseButton v-show="prevPageUrl" size="s" class="pagination-button" @click="goToPrev">
+      <BaseButton 
+        v-show="postsStore.isPrevPageUrl" 
+        size="s" 
+        class="pagination-button" 
+        @click="postsStore.getPrevPage"
+      >
         Prev
       </BaseButton>
       <div class="d-flex"></div>
-      <BaseButton v-show="nextPageUrl" size="s" class="pagination-button" @click="goToNext" text="Next"/>
+      <BaseButton 
+        v-show="postsStore.isNextPageUrl"  
+        class="pagination-button" 
+        @click="postsStore.getNextPage" 
+        size="s"
+        text="Next"
+      />
     </div>
+
+    <div class="d-flex">
+        <FormInput
+          v-model="postsStore.search"
+        />
+        <BaseButton 
+          class="pagination-button" 
+          @click="postsStore.serchPosts" 
+          size="s"
+          text="Search"
+        />
+      </div>
 
     <!-- <div class="post-list__search-wrapper">
       <BaseInput 
@@ -79,9 +97,9 @@ export default {
       </BaseButton>
     </div> -->
 
-    <VueSpinner v-if="loading" size="l"/>
+    <VueSpinner v-if="postsStore.loading" size="l"/>
     <template v-else>
-      <div v-for="post in postListData" :key='post.id'>
+      <div v-for="post in postsStore.getPosts" :key='post.id'>
         <PostListItem :model="post" @click="openPagePost(post.id)"/>
       </div>
     </template>
