@@ -38,13 +38,13 @@ export default {
         }
     },
     computed: {
-        isErorr() {
+        isError() {
             return !!this.errorMessage.length
         },
         rootClasses() {
             return {
                 'form-input_password': this.passwordField,
-                'js--error': this.isErorr
+                'js--error': this.isError
             }
         }
     }

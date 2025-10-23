@@ -13,9 +13,14 @@ export const useAuthStore = defineStore('auth', {
     },
 
     actions: {
+        setup() {
+            this.refreshToken = this.getRefreshCookie() ? this.getRefreshCookie() : ''
+            this.accessToken = this.getAccessCookie() ? this.getAccessCookie() : ''
+        },
+
         async login(userData) {
             try {
-                const authResponse = await fetch('https://studapi.teachmeskills.by/auth/jwt/create/)', {
+                const authResponse = await fetch('https://studapi.teachmeskills.by/auth/jwt/create/', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -63,6 +68,10 @@ export const useAuthStore = defineStore('auth', {
             return cookie.get(this.accessTokenKey)
         },
 
+        getRefreshCookie() {
+            return cookie.get(this.refreshTokenKey)
+        },
+
         clearAllCookies() {
             cookie.remove(this.refreshTokenKey)
             cookie.remove(this.accessTokenKey)
@@ -72,7 +81,7 @@ export const useAuthStore = defineStore('auth', {
             const isAccessAllowed = this.getAccessCookie()
 
             if (!isAccessAllowed) {
-               await this.updateAccessToken()
+                await this.updateAccessToken()
             }
 
             try {
