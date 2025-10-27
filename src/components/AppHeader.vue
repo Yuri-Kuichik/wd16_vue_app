@@ -1,34 +1,23 @@
-<script>
+<script setup>
+import {ref, computed} from 'vue';
 import { useAuthStore } from "@/stores/auth.js";
 import FormInput from "@/components/FormInput.vue";
 
-export default {
-  components: {
-    FormInput
-  },
-  data() {
-    return {
-      authStore: useAuthStore(),
-      isModalOpen: false,
-      newEmail: '',
-      password: ''
-    }
-  },
+const authStore = useAuthStore();
+const isModalOpen = ref(false);
+const newEmail = ref('');
+const password = ref('');
 
-  methods: {
-    openModal() {
-      this.isModalOpen = true
-    },
-    closeModal() {
-      this.isModalOpen = false
-    }
-  },
+const checkAuthorization = computed(() => {
+  return !!authStore.refreshToken.length
+})
 
-  computed: {
-    checkAuthorization() {
-      return !!this.authStore.refreshToken.length;
-    }
-  }
+function openModal() {
+  isModalOpen.value = true
+}
+
+function closeModal() {
+  isModalOpen.value = false
 }
 </script>
 

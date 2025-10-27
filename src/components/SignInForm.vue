@@ -1,77 +1,70 @@
-<script>
+<script setup>
 import FormInput from '@/components/FormInput.vue';
 import BaseButton from "@/components/BaseButton.vue";
-import {useAuthStore} from "@/stores/auth.js";
+import { useAuthStore } from "@/stores/auth.js";
+import { ref, computed } from 'vue';
 
-export default {
-  components: {
-    FormInput,
-    BaseButton
-  },
-  data() {
-    return {
-      authStore: useAuthStore(),
-      email: '',
-      password: '',
-      passwordFieldType: 'password'
-    }
-  },
-  methods: {
-    sendForm() {
-      const userData = {
-        email: this.email,
-        password: this.password
-      }
-      this.authorizeUser(userData)
-    },
-    switchType() {
-      this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password'
-    },
-    async authorizeUser(userData) {
-      await this.authStore.login(userData)
-    }
-  },
-  computed: {
-    isButtonDisabled() {
-      const emailLength = this.email.length
-      const passwordLength = this.password.length
 
-      return !emailLength || !passwordLength;
-    }
+const authStore = useAuthStore()
+const email = ref('')
+const password =ref('')
+const passwordFieldType = ref('password')
+
+const sendForm = () => {
+  const userData = {
+    email: email.value,
+    password: password.value
   }
+  authorizeUser(userData)
 }
+
+const authorizeUser = (userData) => {
+  authStore.login(userData)
+}
+
+const switchType = () => {
+  passwordFieldType.value = passwordFieldType.value === 'password' ? 'text' : 'password'
+}
+
+const isButtonDisabled = computed(() => {
+  const emailLength = email.value.length
+  const passwordLength = password.value.length
+
+  return !emailLength || !passwordLength;
+})
+
 </script>
 
 <template>
   <div class="sign-in-form-wrapper">
     <form class="sign-in-form">
       <h2 class="sign-in-form__title">Sign In</h2>
-      <FormInput
-          class="sign-in-form__input"
-          label="Email"
-          name="email"
-          valueInput="email"
+
+      <el-input
+          class="new-sign-in-input"
+          type="email"
           placeholder="Enter your email"
+          name="email"
           v-model="email"
       />
-      <FormInput
-          class="sign-in-form__input"
-          label="Password"
-          name="password"
-          valueInput="password"
+
+      <el-input
+          class="new-sign-in-input"
+          type="password"
           placeholder="Enter your password"
+          name="password"
           v-model="password"
-          :type="passwordFieldType"
-          :password-field="true"
-          @switch-type="switchType"
-      >
-      </FormInput>
-      <BaseButton
-          class="sign-in-form__button"
-          text="Sign in"
-          @click.prevent.stop="sendForm"
-          :is-disabled="isButtonDisabled"
+          show-password
       />
+
+      <el-button
+        class="new-sign-in-button"
+        type="warning"
+        :disabled="isButtonDisabled"
+        @click.prevent.stop="sendForm"
+      >
+        Sign In
+      </el-button>
     </form>
   </div>
 </template>
@@ -111,6 +104,11 @@ export default {
     color: var(--color-primary);
     cursor: pointer;
   }
+}
+
+.new-sign-in-button, .new-sign-in-input {
+  margin-top: 20px;
+  width: 240px;
 }
 
 </style>

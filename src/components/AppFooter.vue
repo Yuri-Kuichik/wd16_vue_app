@@ -1,9 +1,5 @@
-<script>
+<script setup>
 import IconLogoTMS from '@/assets/icons/LogoTMS.vue';
-
-export default {
-  components: { IconLogoTMS, }
-}
 </script>
 
 <template>
