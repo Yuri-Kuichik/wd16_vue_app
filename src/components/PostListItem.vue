@@ -1,12 +1,12 @@
-<script>
-export default {
-  props: {
-    postData: {
-      type: Object,
-      default: ()=>({})
-    }
+<script setup>
+import { defineProps } from 'vue';
+
+const props = defineProps({
+  postData: {
+    type: Object,
+    default: ()=>({})
   }
-}
+})
 </script>
 
 <template>

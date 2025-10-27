@@ -1,24 +1,25 @@
-<script>
-export default {
-  props: {
-    name: {
-      type: String,
-      default: ''
-    },
-    placeholder: {
-      type: String,
-      default: 'Здесь могла быть ваша реклама.'
-    },
-    type: {
-      type: String,
-      default: 'text'
-    },
-    modelValue: {
-      type: String,
-      default: ''
-    }
+<script setup>
+import { defineProps } from 'vue';
+
+const props = defineProps({
+  name: {
+    type: String,
+    default: ''
+  },
+  placeholder: {
+    type: String,
+    default: 'Здесь могла быть ваша реклама.'
+  },
+  type: {
+    type: String,
+    default: 'text'
+  },
+  modelValue: {
+    type: String,
+    default: ''
   }
-}
+})
+
 </script>
 
 <template>
