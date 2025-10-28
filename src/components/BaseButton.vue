@@ -1,33 +1,31 @@
-<script>
-export default {
-  props: {
-    loading: {
-      type: Boolean,
-      default: false
-    },
-    text: {
-      type: String,
-      default: 'Click me'
-    },
-    isDisabled: {
-      type: Boolean,
-      default: false
-    },
-    size: {
-      type: String,
-      default: 'm'
-    }
+<script setup>
+import { defineProps, computed } from 'vue';
+
+const props = defineProps({
+  loading: {
+    type: Boolean,
+    default: false
   },
-  computed: {
-    rootClasses() {
-      return { 
-        'is-disabled': this.isDisabled, 
-        [`base-button_size--${this.size}`]: true 
-      }
-    }
+  text: {
+    type: String,
+    default: 'Click me'
+  },
+  isDisabled: {
+    type: Boolean,
+    default: false
+  },
+  size: {
+    type: String,
+    default: 'm'
   }
-  
-}
+})
+
+const rootClasses = computed(() => {
+  return { 
+        'is-disabled': props.isDisabled, 
+        [`base-button_size--${props.size}`]: true 
+      }
+})
 </script>
 
 <template>

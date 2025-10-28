@@ -1,30 +1,12 @@
 import { defineStore } from 'pinia'
+import { ref, computed } from 'vue'
 
-export const useCounterStore = defineStore('counter', {
-  // data
-  state() {
-    return {
-      count: 0,
-      data: []
-    }
-  },
+export const useCounterStore = defineStore('counter', () => {
+  const counter = ref(0)
+  const doubleCounter = computed(() => counter.value * 2)
+  
+  const increment = () => { counter.value++ }
+  const decrement = () => { counter.value-- }
 
-  // computed
-  getters: {
-    doubleCount() {
-      return this.count * 2
-    },
-    double: (state) => state.count * 2
-  },
-
-  // methods
-  actions: {
-    increment() {
-      this.count++
-    },
-
-    decrement() {
-      this.count--
-    }
-  }
+  return { counter, doubleCounter, increment, decrement }
 })

@@ -1,53 +1,53 @@
-<script>
+<script setup>
 import IconHide from '@/assets/icons/IconHide.vue';
 import IconShow from '@/assets/icons/IconShow.vue';
+import { defineProps, computed, defineEmits } from 'vue';
 
-export default {
-    components: {
-        IconHide,
-        IconShow
+const emit = defineEmits(['switchType', 'update:modelValue'])
+const props = defineProps({
+    label: {
+        type: String,
+        default: ''
     },
-    props: {
-        label: {
-            type: String,
-            default: ''
-        },
-        name: {
-            type: String,
-            default: ''
-        },
-        modelValue: {
-            type: String,
-            default: ''
-        },
-        placeholder: {
-            type: String,
-            default: ''
-        },
-        type: {
-            type: String,
-            default: 'text'
-        },
-        passwordField: {
-            type: Boolean,
-            default: false
-        },
-        errorMessage: {
-            type: String,
-            default: ''
-        }
+    name: {
+        type: String,
+        default: ''
     },
-    computed: {
-        isErorr() {
-            return !!this.errorMessage.length
-        },
-        rootClasses() {
-            return {
-                'form-input_password': this.passwordField,
-                'js--error': this.isErorr
-            }
-        }
+    modelValue: {
+        type: String,
+        default: ''
+    },
+    placeholder: {
+        type: String,
+        default: ''
+    },
+    type: {
+        type: String,
+        default: 'text'
+    },
+    passwordField: {
+        type: Boolean,
+        default: false
+    },
+    errorMessage: {
+        type: String,
+        default: ''
     }
+})
+
+const isErorr = computed(() => !!props.errorMessage.length)
+const rootClasses = computed(() => {
+  return {
+    'form-input_password': props.passwordField,
+    'js--error': props.isErorr
+  }
+})
+
+const switchTypePasswordField = () => {
+  emit('switchType')
+}
+const changeInputValue = (value, name) => {
+  emit('update:modelValue', value, name)
 }
 </script>
 
@@ -60,11 +60,11 @@ export default {
                 :id="name"
                 :placeholder="placeholder"
                 :value="modelValue"
-                @input="$emit('update:modelValue', $event.target.value, name)"
+                @input="changeInputValue($event.target.value, name)"
             >
             <button 
                 v-if="passwordField"
-                @click.prevent.stop="$emit('switchType')"
+                @click.prevent.stop="switchTypePasswordField"
             >
                 <span class="icon-wrapper">
                     <IconHide v-if="type === 'password'"/>

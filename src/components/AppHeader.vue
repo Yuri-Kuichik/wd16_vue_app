@@ -1,65 +1,48 @@
-<script>
-import BaseLayout from './BaseLayout.vue';
+<script setup>
 import FormInput from './FormInput.vue';
 import { useAuthStore } from '@/stores/auth';
+import { ref, onMounted, computed } from 'vue';
+import { useRouter } from 'vue-router';
 
-export default {
-  setup() {
-    const authStore = useAuthStore(); 
-    return {
-      authStore
-    }
-  },
+const router = useRouter()
+const authStore = useAuthStore(); 
+const is_auth = ref(false)
+const newEmail = ref('')
+const isShowModalWindow = ref(false)
+const password = ref('')
 
-  components: { BaseLayout, FormInput },
+const isAuthStore = computed(() => {
+  return !!authStore.refreshToken
+})
 
-  data() {
-    return {
-      is_auth: false,
-      newEmail: '',
-      isShowModalWindow: false,
-      password: ''
-    }
-  },
-  
-  watch: {
-    authStore: {
-      handler(state) {
-        this.is_auth = state.isAuth()
-      },
-      deep: true
-    }
-  },
-
-  methods: {
-    signOut() {
-      this.authStore.signOut();
-
-      this.$router.push('/login')
-    },
-
-    openModalChangeEmail() {
-      this.isShowModalWindow = true
-    },
-
-    closeModalChangeEmail() {
-      this.isShowModalWindow = false
-    },
-  }
+const signOut = () => {
+  authStore.signOut();
+  router.push('/login')
 }
+const openModalChangeEmail = () => {
+  isShowModalWindow.value = true
+}
+const closeModalChangeEmail = () => {
+  isShowModalWindow.value = false
+}
+
+onMounted(() => {
+  console.log(is_auth.value)
+})
 </script>
 
 <template>
   <div class="app-header">
     <BaseLayout class="header-section">
       <img class="logo" src="/src/assets/logo.svg" alt="logo Vue">
-      <template v-if="is_auth">
+      <template v-if="isAuthStore">
         <nav class="d-flex">
           <RouterLink to="/">Home</RouterLink>
           <RouterLink to="/counter">Counter</RouterLink>
           <RouterLink to="/calculator">Calculator</RouterLink>
           <!-- <RouterLink to="/login">Login</RouterLink> -->
         </nav>
+        count: {{ count }}
         <div @click="openModalChangeEmail" class="btn-sign-out">
           <b>Change email</b>
         </div>

@@ -18,6 +18,11 @@ export const useAuthStore = defineStore('auth', {
     },
 
     actions: {
+        setup() {
+            this.accessToken = this.getAccessToken()
+            this.refreshToken = this.getRefreshToken()
+        },
+
         async login(data) {
             this.loading = true;
             try {

@@ -1,27 +1,13 @@
-<script>
-export default {
-  data() {
-    return {
-      counter: 0
-    }
-  },
+<script setup>
+import { ref, computed } from 'vue'
+import { useCounterStore } from '@/stores/counter'
 
-  methods: {
-    increment() {
-      this.counter++
-    },
+const counterStore = useCounterStore()
+const counter = ref(0)
+const increment = () => { counterStore.increment() }
+const decrement = () => { counterStore.decrement() }
 
-    decrement() {
-      this.counter--
-    }
-  },
-
-  computed: {
-    doubleCounter() {
-      return this.counter * 2
-    }
-  }
-}
+const doubleCounter = computed(() => counter.value * 2)
 </script>
 
 <template>
@@ -30,10 +16,10 @@ export default {
       <div class="counter-wrapper">
 
         <div>
-          <span class="counter-text">Value: {{ counter }}</span>
+          <span class="counter-text">Value: {{ counterStore.counter }}</span>
         </div>
         <div>
-          <span class="counter-text">Double value: {{ doubleCounter }} </span>
+          <span class="counter-text">Double value: {{ counterStore.doubleCounter }} </span>
         </div>
 
         <div class="d-flex">
