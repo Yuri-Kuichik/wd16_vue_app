@@ -1,60 +1,27 @@
-<script>
+<script setup>
 import { usePostsStore } from '@/stores/posts';
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router';
 import PostListItem from '@/components/PostListItem.vue'
 import FormInput from './FormInput.vue';
 
-export default {
-  components: {
-    PostListItem,
-    FormInput
-  },
+const router = useRouter()
+const postsStore = usePostsStore();
+const mounted = ref(false)
 
-  data() {
-    return {
-      postsStore: usePostsStore(),
-      postListData: [],
-    }
-  },
-
-  methods: {
-    openPagePost(poistId) {
-      console.log('post id: ', poistId)
-
-      this.$router.push({name: 'post', params: {id: poistId} })
-    },
-
-    goToNext() {
-      
-    },
-
-    goToPrev() {
-      
-    },
-
-    searchPosts() {
-      this.getPostList();
-    }
-  },
-
-  computed: {
-    nextPageUrl() {
-      return true
-    },
-
-    prevPageUrl() {
-      return true
-    }
-  },
-
-  async created() {
-    await this.postsStore.getPostList()
-  }
+const openPagePost = (poistId) => {
+  router.push({name: 'post', params: {id: poistId} })
 }
 
+postsStore.getPostList()
+
+onMounted(() => {
+  mounted.value = true
+})
 </script>
 
 <template>
-  <section class="post-list">
+  <section v-if="mounted" class="post-list">
     <div class="pagination-wrapper">
       <BaseButton 
         v-show="postsStore.isPrevPageUrl" 
